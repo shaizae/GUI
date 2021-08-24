@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\GUI.ui'
+# Form implementation generated from reading ui file 'C:\Users\kutgar\PycharmProjects\GUI\GUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         self.next_btn.setStyleSheet("")
         self.next_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("C:\\Users\\kutgar\\PycharmProjects\\GUI\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.next_btn.setIcon(icon)
         self.next_btn.setIconSize(QtCore.QSize(100, 100))
         self.next_btn.setCheckable(False)
@@ -126,23 +126,24 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Data Selection"))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt;\">no comments yet</span></p></body></html>"))
         self.groupBox.setTitle(_translate("MainWindow", "Model"))
-        self.SVM.setText(_translate("MainWindow", "SVM"))
-        self.random_forest.setText(_translate("MainWindow", "random forest"))
+        self.SVM.setText(_translate("MainWindow", "Support Vector Machine"))
+        self.random_forest.setText(_translate("MainWindow", "Random forest"))
         self.XGboost.setText(_translate("MainWindow", "XGboost"))
         self.baiv_gussian.setText(_translate("MainWindow", "Gaussian Naive Bayes"))
-        self.LG_reulated.setText(_translate("MainWindow", "logistic regression regulated"))
-        self.LG.setText(_translate("MainWindow", "logistic regression"))
-        self.LDA.setText(_translate("MainWindow", "LDA"))
+        self.LG_reulated.setText(_translate("MainWindow", "Logistic regression regulated"))
+        self.LG.setText(_translate("MainWindow", "Logistic regression"))
+        self.LDA.setText(_translate("MainWindow", "Linear Discriminant Analysis"))
         self.uplode_csv.setText(_translate("MainWindow", "Upload CSV"))
-        self.select_all_btn.setText(_translate("MainWindow", "Select ALL"))
+        self.select_all_btn.setText(_translate("MainWindow", "Select All"))
         self.select_all_btn.setShortcut(_translate("MainWindow", "Ctrl+A"))
         self.featchers_btn.setText(_translate("MainWindow", "Features"))
         self.target_btn.setText(_translate("MainWindow", "Target"))
         self.groups_btn.setText(_translate("MainWindow", "Groups"))
-        self.find_featchers_btn.setText(_translate("MainWindow", "Find featchers"))
+        self.find_featchers_btn.setText(_translate("MainWindow", "Find Features"))
+        self.find_featchers_btn.setShortcut(_translate("MainWindow", "Ctrl+F"))
 
 
 if __name__ == "__main__":

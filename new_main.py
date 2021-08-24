@@ -89,20 +89,25 @@ class MainWindowLocal:
 
     def dialog_popup(self, text="Choose Number"):
         msg = QMessageBox()
-        msg.setStandardButtons((QMessageBox.Yes | QMessageBox.No))
+        msg.setStandardButtons((QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel))
+        msg.setDefaultButton(QMessageBox.Yes)
         buttons = msg.buttons()
-        buttons[0].setText("1")
+        buttons[0].setText("None")
         buttons[1].setText("0")
+        buttons[2].setText("1")
         msg.setWindowTitle("Dialog message")
         msg.setText(text)
         msg.setIcon(QMessageBox.Question)
         button = msg.exec_()
         if button == QMessageBox.Yes:
-            print("1")
-            return int(1)
-        else:
             print("0")
             return int(0)
+        elif button == QMessageBox.No:
+            print("1")
+            return int(1)
+        elif button == QMessageBox.Cancel:
+            print("np.nan")
+            return np.nan
 
     def select_all(self):
         if self._set_state == 0:
@@ -128,7 +133,7 @@ class MainWindowLocal:
             for name in unique:
                 if not (str(name) == "nan" or str(name) == '1' or str(name) == '0'):
                     replace_with = self.dialog_popup(text=str(name) + " needs to be replaced by 1 or 0")
-                    self.target = self.target.replace(name, replace_with)
+                    self.target = self.target.replace(to_replace=name, value=replace_with)
         self.ui.label_3.setText(f"target selected")
         self._reset_buttens()
 
@@ -162,6 +167,7 @@ class MainWindowLocal:
         return model
 
     def next(self):
+        print(self.target.iloc[:, 0].value_counts(ascending=True))
         if self.features.empty:
             print("No features selected")
             self.show_popup(text_eror="No features selected", state=1)

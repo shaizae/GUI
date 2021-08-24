@@ -18,7 +18,6 @@ class vlaidationSetup:
         self.ui.lode_feturs.clicked.connect(self._load_features)
         self.ui.show_features.clicked.connect(self._show_features)
         self.ui.next_btn.clicked.connect(self._next)
-        self.ui.chi2_input.textChanged.connect(self.sync_pca_lineEdit)
 
         # self.ui.pushButton.clicked.connect(self.set_model)
         # self.MainWindow.show()
@@ -27,7 +26,7 @@ class vlaidationSetup:
         self.model: Classification = model
         self.ui.model_label.setText(self.model.model_name)
         self.ui.model_label.adjustSize()
-        self.ui.pca_input.setText(str(self.model.features_size))
+        self.ui.pca_input.setText(str(0))
         self.ui.chi2_input.setText(str(self.model.features_size))
 
     def _sgf(self):
@@ -57,8 +56,6 @@ class vlaidationSetup:
     def _show_features(self):
         self.model.show_features()
 
-    def sync_pca_lineEdit(self):
-        self.ui.pca_input.setText(self.ui.chi2_input.text())
 
     def _next(self):
         if int(self.ui.chi2_input.text()) < int(self.model.features_size):

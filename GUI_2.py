@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\GUI_2.ui'
+# Form implementation generated from reading ui file 'C:\Users\kutgar\PycharmProjects\GUI\GUI_2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         self.lode_feturs.setObjectName("lode_feturs")
         self.save_features = QtWidgets.QCheckBox(self.feature_selection)
         self.save_features.setGeometry(QtCore.QRect(10, 90, 120, 20))
-        self.save_features.setCheckable(False)
+        self.save_features.setCheckable(True)
         self.save_features.setObjectName("save_features")
         self.pre_prosses = QtWidgets.QGroupBox(self.centralwidget)
         self.pre_prosses.setGeometry(QtCore.QRect(150, 10, 240, 150))
@@ -74,7 +74,7 @@ class Ui_MainWindow(object):
         self.sgf_div.setAlignment(QtCore.Qt.AlignCenter)
         self.sgf_div.setObjectName("sgf_div")
         self.label_2 = QtWidgets.QLabel(self.pre_prosses)
-        self.label_2.setGeometry(QtCore.QRect(160, 20, 60, 10))
+        self.label_2.setGeometry(QtCore.QRect(160, 20, 80, 10))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.label_2.setFont(font)
@@ -106,12 +106,12 @@ class Ui_MainWindow(object):
         self.next_btn.setFont(font)
         self.next_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("C:\\Users\\kutgar\\PycharmProjects\\GUI\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.next_btn.setIcon(icon)
         self.next_btn.setIconSize(QtCore.QSize(100, 100))
         self.next_btn.setObjectName("next_btn")
         self.show_features = QtWidgets.QPushButton(self.centralwidget)
-        self.show_features.setGeometry(QtCore.QRect(10, 280, 161, 91))
+        self.show_features.setGeometry(QtCore.QRect(570, 40, 161, 91))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.show_features.setFont(font)
@@ -130,7 +130,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Preprocessing Data"))
         self.model_label.setText(_translate("MainWindow", "hi ther :)"))
         self.feature_selection.setTitle(_translate("MainWindow", "Feature Selection"))
         self.chi2.setText(_translate("MainWindow", "chi2"))
@@ -143,13 +143,13 @@ class Ui_MainWindow(object):
         self.offset_btn.setText(_translate("MainWindow", "Offset"))
         self.opus_normalizetion.setText(_translate("MainWindow", "Opus Normalization"))
         self.sgf_div.setText(_translate("MainWindow", "0"))
-        self.label_2.setText(_translate("MainWindow", "div degree"))
+        self.label_2.setText(_translate("MainWindow", "derivative degree"))
         self.balancing.setTitle(_translate("MainWindow", "Balancing"))
         self.bootstrap.setText(_translate("MainWindow", "Bootstrap"))
         self.smote.setText(_translate("MainWindow", "Smote"))
         self.standart_scaling.setText(_translate("MainWindow", "Standard scaling"))
         self.label.setText(_translate("MainWindow", "dibug"))
-        self.show_features.setText(_translate("MainWindow", "show features"))
+        self.show_features.setText(_translate("MainWindow", "Plot Data"))
 
 
 if __name__ == "__main__":

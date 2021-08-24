@@ -15,11 +15,14 @@ class ValidationExecute:
         self.ui.K_folds_le.setText(str(5))
         self.ui.test_size_le.setText(str(0.7))
         self.ui.save_url_btn.clicked.connect(self._save_url)
+        self.ui.save_model_btn.clicked.connect(self._save_model)
         self.ui.LLR.click()
         self.ui.train.clicked.connect(self._train)
 
+
     def set_model(self, model):
         self.model: Classification = model
+        self.ui.model_name.setText(self.model.model_name)
 
     def _train(self):
         if self.ui.LLR.isChecked():
@@ -42,6 +45,8 @@ class ValidationExecute:
             self.model.train_test_split(test_size=test_size, method=method)
         if self.ui.class_report_le.text() != '':
             self.model.save_classification_report(self.ui.class_report_le.text())
+            text = open(self.ui.class_report_le.text()+' .txt').read()
+            self.ui.plainTextEdit_panel.setPlainText(text)
         if self.ui.ROC_le.text() != '':
             self.model.show_roc(self.ui.ROC_le.text())
         if self.ui.weitse.text() != '':
@@ -49,8 +54,14 @@ class ValidationExecute:
         if self.ui.det_le.text() != '':
             self.model.show_det(self.ui.det_le.text())
 
+
+
     def _save_url(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName = QFileDialog.getExistingDirectory(options=options)
         os.chdir(fileName)
+        self.ui.reports.setEnabled(True)
+
+    def _save_model(self):
+        self.model.save_model(self.ui.model_name.text())
