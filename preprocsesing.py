@@ -54,7 +54,7 @@ class PreProcess:
         norm: normalize the data
         offset: offset the data
         """
-        optinons_list = ["sgf", "norm", "offset", "drop_None", "opus_normalization"]
+        optinons_list = ["sgf", "norm", "offset", "drop_None", "opus_normalization", "group_by"]
         for i in preprocessing_list:
             i = spelling_fixer(i, optinons_list)
             if i == "sgf":  # using sagalov filter to smote and divert data (it's c++ librerry os its not clean memory
@@ -88,6 +88,17 @@ class PreProcess:
                 features = np.array(squares(self.features[:, :])).sum(axis=1)
                 for num, j in enumerate(features):
                     self.features[num, :] /= j
+
+            elif i == "group_by":
+                tamp = np.concatenate((self.features, self.target.reshape([-1, 1]), self.group.reshape([-1, 1])),
+                                      axis=1)
+                col = np.reshape(self.features_name, [self.features_name.shape[0], 1])
+                col = np.append(col, ["target", "group"])
+                tamp = pd.DataFrame(data=tamp, columns=col).groupby("group").mean()
+                self.target = tamp["target"].values
+                del tamp["target"]
+                self.features = tamp.values
+                self.group = np.array(range(self.features.shape[0]))
 
     def expend_features(self, expend):
         """
@@ -176,7 +187,6 @@ class PreProcess:
             consol.log("[green] model hes been modulated")
             self.model = self.model.set_params(**tamp)
         self._modified = False
-
 
     def show_features(self):
         """

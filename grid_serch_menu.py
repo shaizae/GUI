@@ -90,8 +90,6 @@ class GridSerch:
         num_features, params_dic = self.model.K_folds_nested(N_features=features_list,
                                                              number_of_folds=int(self.ui.K_folds_num.text()),
                                                              method=method)
-        print(num_features)
-        print(params_dic)
 
     def _grid_search(self):
         k_folds = int(self.ui.K_folds_num.text())

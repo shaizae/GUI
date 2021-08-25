@@ -133,7 +133,7 @@
       <x>150</x>
       <y>10</y>
       <width>240</width>
-      <height>150</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="font">
@@ -229,6 +229,19 @@
      </property>
      <property name="text">
       <string>derivative degree</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="group_by">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>140</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>group by</string>
      </property>
     </widget>
    </widget>

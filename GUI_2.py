@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\kutgar\PycharmProjects\GUI\GUI_2.ui'
+# Form implementation generated from reading ui file '.\GUI_2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
         self.save_features.setCheckable(True)
         self.save_features.setObjectName("save_features")
         self.pre_prosses = QtWidgets.QGroupBox(self.centralwidget)
-        self.pre_prosses.setGeometry(QtCore.QRect(150, 10, 240, 150))
+        self.pre_prosses.setGeometry(QtCore.QRect(150, 10, 240, 191))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -79,6 +79,9 @@ class Ui_MainWindow(object):
         font.setPointSize(8)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
+        self.group_by = QtWidgets.QPushButton(self.pre_prosses)
+        self.group_by.setGeometry(QtCore.QRect(10, 150, 140, 23))
+        self.group_by.setObjectName("group_by")
         self.balancing = QtWidgets.QGroupBox(self.centralwidget)
         self.balancing.setGeometry(QtCore.QRect(400, 10, 131, 151))
         font = QtGui.QFont()
@@ -106,7 +109,7 @@ class Ui_MainWindow(object):
         self.next_btn.setFont(font)
         self.next_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:\\Users\\kutgar\\PycharmProjects\\GUI\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(".\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.next_btn.setIcon(icon)
         self.next_btn.setIconSize(QtCore.QSize(100, 100))
         self.next_btn.setObjectName("next_btn")
@@ -144,6 +147,7 @@ class Ui_MainWindow(object):
         self.opus_normalizetion.setText(_translate("MainWindow", "Opus Normalization"))
         self.sgf_div.setText(_translate("MainWindow", "0"))
         self.label_2.setText(_translate("MainWindow", "derivative degree"))
+        self.group_by.setText(_translate("MainWindow", "group by"))
         self.balancing.setTitle(_translate("MainWindow", "Balancing"))
         self.bootstrap.setText(_translate("MainWindow", "Bootstrap"))
         self.smote.setText(_translate("MainWindow", "Smote"))
