@@ -1,3 +1,4 @@
+import pandas as pd
 from PyQt5.QtWidgets import QTableWidgetItem, QFileDialog, QMessageBox
 
 from GUI import *
@@ -11,6 +12,7 @@ class MainWindowLocal:
     def __init__(self, val_win):
         self.features_clicked = False
         self.target_clicked = False
+        self.gruop_clicked = False
         #
         self.val_win = val_win
         self.MainWindow = QtWidgets.QMainWindow()
@@ -22,6 +24,7 @@ class MainWindowLocal:
         self.ui.target_btn.clicked.connect(self.target_decisions)
         self.ui.groups_btn.clicked.connect(self.group_decisions)
         self.ui.find_featchers_btn.clicked.connect(self.auto_fetchers)
+        self.ui.filterin_butten.clicked.connect(self.filtering)
         self.ui.SVM.click()
         self.ui.next_btn.clicked.connect(self.next)
         self.MainWindow.show()
@@ -37,8 +40,6 @@ class MainWindowLocal:
             except:
                 pass
 
-
-
     def upload_file(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -46,7 +47,7 @@ class MainWindowLocal:
         if fileName:
             print(fileName)
         try:
-            self.file = pd.read_csv(fileName)
+            self.file: pd.DataFrame = pd.read_csv(fileName)
             self.ui.data_tabel.setColumnCount(self.file.shape[1])
             rows = self.file.shape[0]
             if rows > 10:
@@ -72,6 +73,7 @@ class MainWindowLocal:
             self.ui.target_btn.setEnabled(True)
             self.ui.groups_btn.setEnabled(True)
             self.ui.find_featchers_btn.setEnabled(True)
+            self.ui.filterin_butten.setEnabled(True)
         except:
             print("An exception occurred, csv file was not found or is not readable")
             self.show_popup(text_eror=" csv file was not found or is not readable", state=1)
@@ -109,6 +111,22 @@ class MainWindowLocal:
             print("np.nan")
             return np.nan
 
+    def dialog_popup_filtering(self, text="Choose Number"):
+        msg = QMessageBox()
+        msg.setStandardButtons((QMessageBox.Yes | QMessageBox.No))
+        msg.setDefaultButton(QMessageBox.Yes)
+        buttons = msg.buttons()
+        buttons[0].setText("save")
+        buttons[1].setText("remove")
+        msg.setWindowTitle("Dialog message")
+        msg.setText(text)
+        msg.setIcon(QMessageBox.Question)
+        button = msg.exec_()
+        if button == QMessageBox.Yes:
+            return int(1)
+        elif button == QMessageBox.No:
+            return int(0)
+
     def select_all(self):
         if self._set_state == 0:
             self._set_state = 2
@@ -137,7 +155,28 @@ class MainWindowLocal:
         self.ui.label_3.setText(f"target selected")
         self._reset_buttens()
 
+    def filtering(self):
+        vals = self._raed_index()
+        vals = self.file.columns[vals].values
+        tamp = self.file[vals]
+        unique = pd.unique(np.squeeze(tamp.values))
+        for name in unique:
+            if not (str(name) == "nan" or str(name) == '1' or str(name) == '0'):
+                replace_with = self.dialog_popup_filtering(text=str(name) + " needs to be replaced by 1 or 0")
+                tamp = tamp.replace(to_replace=name, value=replace_with)
+        tamp = np.where(tamp.values == 1)[0]
+        if self.target_clicked:
+            self.target = self.target.iloc[tamp,:]
+
+        if self.features_clicked:
+            self.features = self.features.iloc[tamp, :]
+        if self.gruop_clicked:
+            self.group=self.group.iloc[tamp,:]
+        self.file = self.file.iloc[tamp, :]
+        self._reset_buttens()
+
     def group_decisions(self):
+        self.gruop_clicked=True
         vals = self._raed_index()
         self.group = self.file.loc[:, vals]
         self.ui.label_3.setText(f"group selected")
@@ -197,7 +236,7 @@ class MainWindowLocal:
         return vals
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     model4 = ValidationExecute()
     model3 = GridSerch(model4)

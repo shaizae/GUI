@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\kutgar\PycharmProjects\GUI\GUI.ui'
+# Form implementation generated from reading ui file '.\GUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
         self.data_tabel.setColumnCount(0)
         self.data_tabel.setObjectName("data_tabel")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(640, 300, 141, 51))
+        self.label_3.setGeometry(QtCore.QRect(230, 300, 141, 51))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         self.next_btn.setStyleSheet("")
         self.next_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:\\Users\\kutgar\\PycharmProjects\\GUI\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(".\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.next_btn.setIcon(icon)
         self.next_btn.setIconSize(QtCore.QSize(100, 100))
         self.next_btn.setCheckable(False)
@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
         self.next_btn.setAutoExclusive(False)
         self.next_btn.setObjectName("next_btn")
         self.frame_btn = QtWidgets.QFrame(self.centralwidget)
-        self.frame_btn.setGeometry(QtCore.QRect(640, 30, 150, 250))
+        self.frame_btn.setGeometry(QtCore.QRect(640, 30, 150, 311))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(12)
@@ -104,6 +104,10 @@ class Ui_MainWindow(object):
         self.groups_btn.setEnabled(False)
         self.groups_btn.setGeometry(QtCore.QRect(0, 200, 150, 50))
         self.groups_btn.setObjectName("groups_btn")
+        self.filterin_butten = QtWidgets.QPushButton(self.frame_btn)
+        self.filterin_butten.setEnabled(False)
+        self.filterin_butten.setGeometry(QtCore.QRect(0, 250, 150, 50))
+        self.filterin_butten.setObjectName("filterin_butten")
         self.find_featchers_btn = QtWidgets.QPushButton(self.centralwidget)
         self.find_featchers_btn.setEnabled(False)
         self.find_featchers_btn.setGeometry(QtCore.QRect(510, 130, 130, 50))
@@ -142,6 +146,7 @@ class Ui_MainWindow(object):
         self.featchers_btn.setText(_translate("MainWindow", "Features"))
         self.target_btn.setText(_translate("MainWindow", "Target"))
         self.groups_btn.setText(_translate("MainWindow", "Groups"))
+        self.filterin_butten.setText(_translate("MainWindow", "Filtering"))
         self.find_featchers_btn.setText(_translate("MainWindow", "Find Features"))
         self.find_featchers_btn.setShortcut(_translate("MainWindow", "Ctrl+F"))
 

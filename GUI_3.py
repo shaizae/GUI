@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\kutgar\PycharmProjects\GUI\GUI_3.ui'
+# Form implementation generated from reading ui file '.\GUI_3.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         self.modal_modulation.setFont(font)
         self.modal_modulation.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("C:\\Users\\kutgar\\PycharmProjects\\GUI\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(".\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.modal_modulation.setIcon(icon)
         self.modal_modulation.setIconSize(QtCore.QSize(100, 100))
         self.modal_modulation.setObjectName("modal_modulation")
@@ -77,13 +77,6 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.skylearn_help_btn.setFont(font)
         self.skylearn_help_btn.setObjectName("skylearn_help_btn")
-        self.save_report = QtWidgets.QCheckBox(self.centralwidget)
-        self.save_report.setGeometry(QtCore.QRect(470, 220, 90, 20))
-        font = QtGui.QFont()
-        font.setFamily("Times New Roman")
-        font.setPointSize(12)
-        self.save_report.setFont(font)
-        self.save_report.setObjectName("save_report")
         self.K_folds_nested_btn = QtWidgets.QPushButton(self.centralwidget)
         self.K_folds_nested_btn.setGeometry(QtCore.QRect(210, 250, 150, 30))
         self.K_folds_nested_btn.setObjectName("K_folds_nested_btn")
@@ -134,7 +127,6 @@ class Ui_MainWindow(object):
         self.grid_search.setText(_translate("MainWindow", "Grid search"))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" color:#aa3417;\">Grid serch drops 10% as development!</span></p></body></html>"))
         self.skylearn_help_btn.setText(_translate("MainWindow", "Model help!"))
-        self.save_report.setText(_translate("MainWindow", "Save report"))
         self.K_folds_nested_btn.setText(_translate("MainWindow", "Grid search k-folds nested"))
         self.desigion_logic.setTitle(_translate("MainWindow", "Decision logic k-folds nested"))
         self.no_vote.setText(_translate("MainWindow", "No vote"))
