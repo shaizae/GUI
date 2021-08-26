@@ -18,6 +18,11 @@ class ValidationExecute:
         self.ui.save_model_btn.clicked.connect(self._save_model)
         self.ui.LLR.click()
         self.ui.train.clicked.connect(self._train)
+        self.ui.maximum_delta_input.setText(str(0.2))
+        self.ui.tpr_low_band_input.setText(str(0.5))
+        self.ui.find_work_point_btn.setEnabled(False)
+        self.ui.find_work_point_btn.clicked.connect(self.find_work_point)
+
 
 
     def set_model(self, model):
@@ -53,6 +58,7 @@ class ValidationExecute:
             self.model.save_classification_probability(self.ui.weitse.text())
         if self.ui.det_le.text() != '':
             self.model.show_det(self.ui.det_le.text())
+        self.ui.find_work_point_btn.setEnabled(True)
 
 
 
@@ -62,6 +68,18 @@ class ValidationExecute:
         fileName = QFileDialog.getExistingDirectory(options=options)
         os.chdir(fileName)
         self.ui.reports.setEnabled(True)
+
+    def find_work_point(self):
+        plt.close()
+        if self.ui.ROC_le.text() != '':
+            name=self.ui.ROC_le.text()
+        else:
+            name=None
+        repo,_=self.model.optimal_cut_point_on_roc_(delta_max=float(self.ui.maximum_delta_input.text()),tpr_low_bound=float(self.ui.tpr_low_band_input.text()),name=name)
+        consol = Console(color_system="windows")
+        consol.print("[green] beast acurecy point report:")
+        print(repo)
+
 
     def _save_model(self):
         self.model.save_model(self.ui.model_name.text())

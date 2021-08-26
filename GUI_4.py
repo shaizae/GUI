@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\kutgar\PycharmProjects\GUI\GUI_4.ui'
+# Form implementation generated from reading ui file '.\GUI_4.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -137,6 +137,24 @@ class Ui_MainWindow(object):
         self.plainTextEdit_panel = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.plainTextEdit_panel.setGeometry(QtCore.QRect(380, 160, 401, 361))
         self.plainTextEdit_panel.setObjectName("plainTextEdit_panel")
+        self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_2.setGeometry(QtCore.QRect(240, 210, 120, 171))
+        self.groupBox_2.setObjectName("groupBox_2")
+        self.label = QtWidgets.QLabel(self.groupBox_2)
+        self.label.setGeometry(QtCore.QRect(0, 30, 101, 16))
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_2.setGeometry(QtCore.QRect(0, 70, 111, 16))
+        self.label_2.setObjectName("label_2")
+        self.find_work_point_btn = QtWidgets.QPushButton(self.groupBox_2)
+        self.find_work_point_btn.setGeometry(QtCore.QRect(4, 130, 101, 23))
+        self.find_work_point_btn.setObjectName("find_work_point_btn")
+        self.maximum_delta_input = QtWidgets.QLineEdit(self.groupBox_2)
+        self.maximum_delta_input.setGeometry(QtCore.QRect(0, 50, 113, 20))
+        self.maximum_delta_input.setObjectName("maximum_delta_input")
+        self.tpr_low_band_input = QtWidgets.QLineEdit(self.groupBox_2)
+        self.tpr_low_band_input.setGeometry(QtCore.QRect(0, 90, 113, 20))
+        self.tpr_low_band_input.setObjectName("tpr_low_band_input")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -173,6 +191,10 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("MainWindow", "Model saving"))
         self.save_model_btn.setText(_translate("MainWindow", "save "))
         self.model_name_le.setText(_translate("MainWindow", "Model name"))
+        self.groupBox_2.setTitle(_translate("MainWindow", "GroupBox"))
+        self.label.setText(_translate("MainWindow", "maximum delta"))
+        self.label_2.setText(_translate("MainWindow", "tpr low band"))
+        self.find_work_point_btn.setText(_translate("MainWindow", "find work point"))
 
 
 if __name__ == "__main__":

@@ -21,6 +21,7 @@ class ClassificationPreprocessing(PreProcess):
 
     def __init__(self, X, y):
         super().__init__(X, y)
+        self.roc_labels = None
         self.for_after_test_ = None
         self.to_save_probability = None
         self._for_train = None
@@ -171,7 +172,7 @@ class ClassificationPreprocessing(PreProcess):
             plt.show()
         else:
             if ClassificationPreprocessing.SAVE:
-                plt.savefig(str(name + " " + ClassificationPreprocessing.ADD_TO_REPORT + ".png"))
+                plt.savefig(str(name + ClassificationPreprocessing.ADD_TO_REPORT + ".png"))
             else:
                 console = Console(color_system="windows")
                 console.print(f"[red]save set off[/red]")
@@ -243,7 +244,7 @@ class ClassificationPreprocessing(PreProcess):
         for (i, j) in zip(sample, count):
             print(str(i) + ":" + str(j))
 
-    def optimal_cut_point_on_roc_(self, delta_max=0.8, plot_point_on_ROC=False, save_report=None):
+    def optimal_cut_point_on_roc_(self, delta_max=0.8,  tpr_low_bound=0.5,name=None):
         """
         print the optimal cut on you're roc curve
         :param save_report: if you like to save local report (type: string)
@@ -251,50 +252,64 @@ class ClassificationPreprocessing(PreProcess):
         :param plot_point_on_ROC: is you like to show the roc curve now (type:bool)
         :return: report on you're optimal working point (type: dictionary)
         """
-        tpr = self.fpr_
-        fpr = self.tpr_
-        n_p = self.target[self.target == 0].shape[0]
-        n_n = self.target[self.target == 1].shape[0]
-        sen = fpr[fpr > 0.55]
-        spe = 1 - tpr[fpr > 0.55]
+
+        fpr=self.tpr_
+        tpr=self.fpr_
+        thresholds=self.threshold_
+
+
+        auc_score = self.auc_roc_
+        n_n = self.roc_labels[self.roc_labels == 0].shape[0]
+        n_p = self.roc_labels[self.roc_labels == 1].shape[0]
+        # sen = fpr[fpr > 0.55]
+        # spe = 1 - tpr[fpr > 0.55]
+        sen = tpr[tpr > tpr_low_bound]
+        spe = 1 - fpr[tpr > tpr_low_bound]
+        thresholds = thresholds[tpr > tpr_low_bound]
 
         delt = abs(sen - spe)
         ix_1 = np.argwhere(delt <= delta_max)
 
         acc = (n_p / (n_p + n_n)) * sen[ix_1] + (n_n / (n_p + n_n)) * spe[ix_1]
-        best_point = (1 - spe[np.argmax(acc)], sen[np.argmax(acc)])
-        auc = np.around(np.trapz(fpr, tpr), 2)
+        acc_max_index = ix_1[np.argmax(acc)][0]
+        best_point = (1 - spe[acc_max_index], sen[acc_max_index])
+        #         auc = np.around(np.trapz(tpr, fpr), 2)
 
-        recall_1 = sen[np.argmax(acc)]
-        recall_2 = spe[np.argmax(acc)]
-        precision_1 = (n_p * sen[np.argmax(acc)]) / (n_p * sen[np.argmax(acc)] + n_n * (1 - spe[np.argmax(acc)]))
-        precision_2 = (n_n * spe[np.argmax(acc)]) / (n_n * spe[np.argmax(acc)] + n_p * (1 - sen[np.argmax(acc)]))
+        recall_1 = sen[acc_max_index]
+        recall_2 = spe[acc_max_index]
+        precision_1 = (n_p * sen[acc_max_index]) / (n_p * sen[acc_max_index] + n_n * (1 - spe[acc_max_index]))
+        precision_2 = (n_n * spe[acc_max_index]) / (n_n * spe[acc_max_index] + n_p * (1 - sen[acc_max_index]))
 
-        report = {"auc": np.around(auc, 2), "acc": np.around(acc.max(), 2), "sen": np.around(recall_1, 2),
-                  "spe": np.around(recall_2, 2), "npv": np.around(precision_1, 2),
-                  "ppv": np.around(precision_2, 2)
+        report = {"auc": [np.around(auc_score, 2)], "acc": [np.around(acc.max(), 2)], "SE": [np.around(recall_1, 2)],
+                  "SP": [np.around(recall_2, 2)], "PPV": [np.around(precision_1, 2)],
+                  "NPV": [np.around(precision_2, 2)]
                   }
-        if plot_point_on_ROC:
-            p = Process(target=ClassificationPreprocessing._plot_optimal_cut, args=(fpr, tpr, best_point,))
-            p.start()
+        #         report = {"auc": np.around(auc_score, 2), "acc": np.around(acc.max(), 2), "SE": np.around(recall_1, 2),
+        #                   "SP": np.around(recall_2, 2), "PPV (prcsion)": np.around(precision_1, 2),
+        #                   "NPV": np.around(precision_2, 2)
+        #                   }
+        _plot_optimal_cut(fpr, tpr, best_point,name)
+        # if plot_point_on_ROC:
+        #     p = Process(target=ClassificationPreprocessing, args=(fpr, tpr, best_point,))
+        #     p.start()
 
-        if save_report is not None:
-            with open(str(save_report) + ".txt", "w") as f:
-                for key, valu in report.items():
-                    f.write(str(key) + ": " + str(valu) + "\n")
-        print(report)
+        return report, thresholds[acc_max_index]
 
-        return report
 
-    @staticmethod
-    def _plot_optimal_cut(fpr, tpr, best_point):
-        """
-        print the optimal point
-        *not for users*
-        """
-        plt.plot(tpr, fpr)
-        plt.scatter(best_point[0], best_point[1], c="red")
-        plt.xlabel("1-specificity")
-        plt.ylabel("sensitivity")
-        plt.plot([0, 1], [0, 1], "--r")
+def _plot_optimal_cut(tpr, fpr, best_point,name):
+    """
+    print the optimal point
+    *not for users*
+    """
+    plt.figure(figsize=(7, 7))  # set the plot parameters
+    plt.rc("font", family="Times New Roman", size=16)
+    plt.rc('axes', linewidth=2)
+    plt.plot(fpr, tpr)
+    plt.scatter(best_point[1], best_point[0], c="red")
+    plt.xlabel("1-Specificity", fontdict={"size": 21})
+    plt.ylabel("Sensitivity", fontdict={"size": 21})
+    plt.plot([0, 1], [0, 1], "--r")
+    if name is not None:
+        plt.savefig(name)
+    else:
         plt.show()

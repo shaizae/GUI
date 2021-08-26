@@ -180,25 +180,6 @@
      <string>Model help!</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="save_report">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>220</y>
-      <width>90</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Times New Roman</family>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Save report</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="K_folds_nested_btn">
     <property name="geometry">
      <rect>
