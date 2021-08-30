@@ -33,11 +33,10 @@ class ClassificationPreprocessing(PreProcess):
         :param ret: if you like to return the features_size and the targets that possessed (type: bool)
         :return: features_size and the targets that possessed
         """
-        find_min=self.features.min()
-        if find_min<0:
+        if self.features.min()<0:
+            consol = Console(color_system="windows")
+            consol.print(f"[blue]the features contain negative numbers so offset use")
             self.preprocessing(["offset"])
-
-
         features = super().feature_selection(number_of_features=number_of_features, teck=tech)
         return features
 

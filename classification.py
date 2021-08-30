@@ -191,7 +191,8 @@ class Classification(ClassificationPreprocessing, PostProcess):
         if method == "majority_vote":
             voted_data = pool.map(_majority_vote, out)
         elif method == "most_likelihoods":
-            voted_data = pool.map(_most_likelihood, out)
+            for i in out:
+                _most_likelihood(i)
         elif method == "no_vote":
             voted_data = pool.map(_no_vote, out)
         else:
@@ -326,7 +327,7 @@ class Classification(ClassificationPreprocessing, PostProcess):
         loo.get_n_splits(X=df, y=target, groups=group)
         out = []
         for train_index, test_index in loo.split(X=df, y=target, groups=group):
-            train_group, test_group = group[train_index], group[test_index]
+            train_group, test_group = self.group[train_index], self.group[test_index]
 
             df_train = df_comper.loc[df_comper["group"].isin(train_group)]
             target_train = df_train["target"].values
