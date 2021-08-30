@@ -1,4 +1,5 @@
 from multiprocessing import Pool
+from numba import njit, jit
 from imblearn.over_sampling import SMOTE
 from sklearn.decomposition import PCA
 from sklearn.base import clone
@@ -109,7 +110,7 @@ class Classification(ClassificationPreprocessing, PostProcess):
         :param group: the classification groups
         :return: the bootstrapped data
         """
-        target=target.reshape([target.shape[0],1])
+        target = target.reshape([target.shape[0], 1])
         group = group.reshape([target.shape[0], 1])
         local_df = np.concatenate((feature, target, group), axis=1)
         col = list(range(feature.shape[1]))
@@ -162,7 +163,7 @@ class Classification(ClassificationPreprocessing, PostProcess):
         return train, test
 
     @staticmethod
-    def _PCA(train, test,pca):
+    def _PCA(train, test, pca):
         pca = PCA(n_components=pca)
         train = pca.fit_transform(train)
         test = pca.transform(test)
@@ -191,8 +192,7 @@ class Classification(ClassificationPreprocessing, PostProcess):
         if method == "majority_vote":
             voted_data = pool.map(_majority_vote, out)
         elif method == "most_likelihoods":
-            for i in out:
-                _most_likelihood(i)
+            voted_data = pool.map(_most_likelihood, out)
         elif method == "no_vote":
             voted_data = pool.map(_no_vote, out)
         else:
@@ -423,8 +423,8 @@ class Classification(ClassificationPreprocessing, PostProcess):
         number_of_featchers_out = []
         params_out = []
         fold_num = 0
-        find_min=self.features.min()
-        if find_min<0:
+        find_min = self.features.min()
+        if find_min < 0:
             self.preprocessing(["offset"])
 
         for train_index, test_index in loo.split(X=self.features, y=self.target, groups=self.group):
@@ -456,8 +456,9 @@ class Classification(ClassificationPreprocessing, PostProcess):
                                      n_jobs=PreProcess._MALTY_PROCESSES).fit(
                     features_train_after,
                     target_train).best_estimator_
-                send_for_test = [clone(self.model), feature_train, target_train, feature_test, target_test, train_group, test_group,
-                 self.standart_scaling, self.pca, self.bootstrap, self.smoote]
+                send_for_test = [clone(self.model), feature_train, target_train, feature_test, target_test, train_group,
+                                 test_group,
+                                 self.standart_scaling, self.pca, self.bootstrap, self.smoote]
 
                 if method == "majority_vote":
                     voted_data = _majority_vote(send_for_test)
@@ -506,7 +507,7 @@ class Classification(ClassificationPreprocessing, PostProcess):
 
         if self.standart_scaling:
             features = StandardScaler().fit_transform(features)
-        if self.pca!=0:
+        if self.pca != 0:
             features = PCA(n_components=self.pca).fit_transform(features)
         if self.bootstrap:
             features, target, _ = Classification._bootstrap(features, target,
@@ -655,6 +656,7 @@ def _no_vote(arguments_input):
     return out_put
 
 
+@jit()
 def _most_likelihood(arguments_input):
     """
     classify the data most likelihood
@@ -665,12 +667,7 @@ def _most_likelihood(arguments_input):
         arguments_input)
 
     group_u = np.unique(test_group)
-    try:
-        local_df = np.concatenate((feature_test, target_test, test_group), axis=1)
-    except:
-        target_test = np.reshape(target_test, [target_test.shape[0], 1])
-        test_group = np.reshape(test_group, [test_group.shape[0], 1])
-        local_df = np.concatenate((feature_test, target_test, test_group), axis=1)
+    local_df = np.concatenate((feature_test, target_test.reshape([-1, 1]), test_group.reshape([-1, 1])), axis=1)
     col = list(range(feature_train.shape[1]))
     col = np.append(col, ["target", "group"])
     local_df = pd.DataFrame(local_df, columns=col)
@@ -684,8 +681,8 @@ def _most_likelihood(arguments_input):
 
         probability = model.predict_proba(feature)
         if probability.shape[1] == 2:
-            probability_to_one = sum(list(map(lambda x: np.log2(x), probability[:, 1]))) / probability.shape[0]
-            probability_to_zero = sum(list(map(lambda x: np.log2(x), probability[:, 0]))) / probability.shape[0]
+            probability_to_one = sum(list(map(log_2, probability[:, 1]))) / probability.shape[0]
+            probability_to_zero = sum(list(map(log_2, probability[:, 0]))) / probability.shape[0]
             if probability_to_one > probability_to_zero:
                 prediction = 1
             else:
@@ -703,6 +700,7 @@ def _most_likelihood(arguments_input):
     return out_put
 
 
+@jit()
 def _majority_vote(arguments_input):
     """
     classify the data majority vote
@@ -713,12 +711,7 @@ def _majority_vote(arguments_input):
         arguments_input)
 
     group_u = np.unique(test_group)
-    try:
-        local_df = np.concatenate((feature_test, target_test, test_group), axis=1)
-    except:
-        target_test = np.reshape(target_test, [target_test.shape[0], 1])
-        test_group = np.reshape(test_group, [test_group.shape[0], 1])
-        local_df = np.concatenate((feature_test, target_test, test_group), axis=1)
+    local_df = np.concatenate((feature_test, target_test.reshape([-1, 1]), test_group.reshape([-1, 1])), axis=1)
     col = list(range(feature_train.shape[1]))
     col = np.append(col, ["target", "group"])
     local_df = pd.DataFrame(local_df, columns=col)
@@ -741,6 +734,7 @@ def _majority_vote(arguments_input):
     return out_put
 
 
+@jit()
 def _input_classification_system(arguments_input):
     """
     every proses that need to run sepredly on every train set
@@ -756,7 +750,7 @@ def _input_classification_system(arguments_input):
         feature_train, feature_test = Classification._standard_scale(feature_train, feature_test)
 
     if pca != 0:
-        feature_train, feature_test = Classification._PCA(feature_train, feature_test,pca)
+        feature_train, feature_test = Classification._PCA(feature_train, feature_test, pca)
     if bootstrap:
         feature_train, target_train, train_group = Classification._bootstrap(feature_train, target_train, train_group)
     if smoote:
@@ -765,3 +759,7 @@ def _input_classification_system(arguments_input):
     model.fit(feature_train, target_train)
 
     return model, feature_train, target_train, feature_test, target_test, train_group, test_group
+
+@jit()
+def log_2(x):
+    return np.log2(x)
