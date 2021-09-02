@@ -194,7 +194,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>IMG/next.jpg</normaloff>IMG/next.jpg</iconset>
+      <normaloff>../GUI/IMG/next.jpg</normaloff>../GUI/IMG/next.jpg</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -358,7 +358,7 @@
      <string>Ctrl+F</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="loade_model_btn">
+   <widget class="QPushButton" name="load_model_btn">
     <property name="geometry">
      <rect>
       <x>250</x>

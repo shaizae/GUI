@@ -5,15 +5,21 @@ import webbrowser
 
 
 def _respond_none(given):
+    """
+    respons to case thet the original ype was None
+    :param given: the value tet input in the hyper parameters table (type: unknown that why we have that program)
+    :return:
+    """
     try:
         given = int(given)
     except Exception:
         try:
             given = float(given)
         except Exception:
-            given = str(given)
-        except Exception:
-            given = None
+            try:
+                given = str(given)
+            except Exception:
+                given = None
     return given
 
 
@@ -31,6 +37,11 @@ class GridSerch:
         # self.ui.next.clicked.connect(self._next)
 
     def set_model(self, model):
+        """
+        setting the classification model
+        :param model: the model that defines in the last screen (type: Classification)
+        :return:
+        """
         self.model: Classification = model
         hiper_parms = list(self.model.model.get_params().keys())
         parms = list(self.model.model.get_params().values())
@@ -47,6 +58,10 @@ class GridSerch:
             self.ui.param_tabel.setItem(0, num, item)
 
     def _nested(self):
+        """
+        using K fold nested validation on the data set to determn the hiper parmeter and the number of faetures
+        :return:
+        """
         if self.ui.LLR.isChecked():
             method = "most_likelihoods"
         elif self.ui.majorety_vote.isChecked():
@@ -92,6 +107,10 @@ class GridSerch:
                                                              method=method)
 
     def _grid_search(self):
+        """
+        using grid search on the data set to determine the hyper parameters and move to the next screen
+        :return:
+        """
         k_folds = int(self.ui.K_folds_num.text())
         core_lim = int(self.ui.core_lim.text())
         self.model.grid_search_k_folds(k_folds=k_folds, multi_proses=core_lim)
@@ -122,6 +141,10 @@ class GridSerch:
         self._next()
 
     def _modal_modulation(self):
+        """
+        modulate the hyper parameters im the classifier and move to the next screen
+        :return:
+        """
         hiper_parms = list(self.model.model.get_params().keys())
         for_modolation = []
         for num, i in enumerate(self.typs):
@@ -138,11 +161,19 @@ class GridSerch:
         self._next()
 
     def _next(self):
+        """
+        move to the next screen
+        :return:
+        """
         self.val_exact.MainWindow.show()
         self.val_exact.set_model(self.model)
         self.MainWindow.close()
 
     def _skylearn_help(self):
+        """
+        open help on the chosen classifier
+        :return:
+        """
         if self.model.model_name == "XGBoost":
             webbrowser.open('https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html')
         elif self.model.model_name == "Gaussian Naive Bayes":

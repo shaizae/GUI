@@ -1,8 +1,8 @@
-import os
+from PyQt5.QtWidgets import QFileDialog
 
 from GUI_4 import *
 from classification import *
-from PyQt5.QtWidgets import QFileDialog
+
 
 class ValidationExecute:
 
@@ -23,13 +23,20 @@ class ValidationExecute:
         self.ui.find_work_point_btn.setEnabled(False)
         self.ui.find_work_point_btn.clicked.connect(self.find_work_point)
 
-
-
     def set_model(self, model):
+        """
+        setting the classification model
+        :param model: the model that defines in the last screen (type: Classification)
+        :return:
+        """
         self.model: Classification = model
         self.ui.model_name.setText(self.model.model_name)
 
     def _train(self):
+        """
+        train the model by validation that chosen
+        :return:
+        """
         if self.ui.LLR.isChecked():
             method = "most_likelihoods"
         elif self.ui.majorety_vote.isChecked():
@@ -50,7 +57,7 @@ class ValidationExecute:
             self.model.train_test_split(test_size=test_size, method=method)
         if self.ui.class_report_le.text() != '':
             self.model.save_classification_report(self.ui.class_report_le.text())
-            text = open(self.ui.class_report_le.text()+' .txt').read()
+            text = open(self.ui.class_report_le.text() + ' .txt').read()
             self.ui.plainTextEdit_panel.setPlainText(text)
         if self.ui.ROC_le.text() != '':
             self.model.show_roc(self.ui.ROC_le.text())
@@ -60,9 +67,11 @@ class ValidationExecute:
             self.model.show_det(self.ui.det_le.text())
         self.ui.find_work_point_btn.setEnabled(True)
 
-
-
     def _save_url(self):
+        """
+        set where to save the report files and the trained model
+        :return:
+        """
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName = QFileDialog.getExistingDirectory(options=options)
@@ -70,16 +79,25 @@ class ValidationExecute:
         self.ui.reports.setEnabled(True)
 
     def find_work_point(self):
+        """
+        find the best work point on the roc cerv
+        :return:
+        """
         plt.close()
         if self.ui.ROC_le.text() != '':
-            name=self.ui.ROC_le.text()
+            name = self.ui.ROC_le.text()
         else:
-            name=None
-        repo,_=self.model.optimal_cut_point_on_roc_(delta_max=float(self.ui.maximum_delta_input.text()),tpr_low_bound=float(self.ui.tpr_low_band_input.text()),name=name)
+            name = None
+        repo, _ = self.model.optimal_cut_point_on_roc_(delta_max=float(self.ui.maximum_delta_input.text()),
+                                                       tpr_low_bound=float(self.ui.tpr_low_band_input.text()),
+                                                       name=name)
         consol = Console(color_system="windows")
         consol.print("[green] beast acurecy point report:")
         print(repo)
 
-
     def _save_model(self):
+        """
+        use all the data and crating a permanent model for classification
+        :return:
+        """
         self.model.save_model(self.ui.model_name.text())

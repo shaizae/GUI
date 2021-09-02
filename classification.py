@@ -639,7 +639,7 @@ class Classification(ClassificationPreprocessing, PostProcess):
     def set_global_setting(changes):
         Classification._GLOBAL_MODEL_SETTING = changes
 
-
+@jit()
 def _no_vote(arguments_input):
     """
     classify the data whit no vote

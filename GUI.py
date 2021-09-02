@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         self.next_btn.setStyleSheet("")
         self.next_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(".\\IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(".\\../GUI/IMG/next.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.next_btn.setIcon(icon)
         self.next_btn.setIconSize(QtCore.QSize(100, 100))
         self.next_btn.setCheckable(False)
@@ -116,6 +116,9 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.find_featchers_btn.setFont(font)
         self.find_featchers_btn.setObjectName("find_featchers_btn")
+        self.load_model_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.load_model_btn.setGeometry(QtCore.QRect(250, 360, 130, 50))
+        self.load_model_btn.setObjectName("load_model_btn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -149,6 +152,7 @@ class Ui_MainWindow(object):
         self.filterin_butten.setText(_translate("MainWindow", "Filtering"))
         self.find_featchers_btn.setText(_translate("MainWindow", "Find Features"))
         self.find_featchers_btn.setShortcut(_translate("MainWindow", "Ctrl+F"))
+        self.load_model_btn.setText(_translate("MainWindow", "loade model"))
 
 
 if __name__ == "__main__":
